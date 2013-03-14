@@ -1,3 +1,62 @@
+import java.util.*;
+ 
+public class LRUCache {
+    private Hashtable cache = new Hashtable();
+    private LinkedList pframe = new LinkedList();
+    private static int cacheSize ;
+    public LRUCache(int size){
+        cacheSize = size;
+    }
+    public void add(Object key, Object val){
+       if(cache.get(key)!= null)
+           pframe.remove(key);
+       else
+       while(cache.size()+1>cacheSize)
+           cache.remove(pframe.removeFirst());
+       pframe.addLast(key);
+       cache.put(key, val);
+    }
+    public Object get(Object key){
+        if(!cache.containsKey(key))
+            return null;
+        pframe.remove(key);
+        pframe.addLast(key);
+        return cache.get(key);
+    }
+    public LinkedList getLRU(){
+        return pframe;
+    }
+}
+class TestLRU{
+    public static void main(String[] argvs){
+        LRUCache lru = new LRUCache(3);
+        lru.add("one", "one");
+        lru.add("two", "two");
+        lru.add("three", "three");
+        lru.add("four","four");
+        LinkedList list = lru.getLRU();
+        for(Object o: list)
+            System.out.print(o.toString() + " ");
+        System.out.println();
+        lru.add("two", "two");
+        lru.add("three", "three");
+        list = lru.getLRU();
+        for(Object o: list)
+            System.out.print(o.toString() + " ");
+        System.out.println();
+        lru.add("five","five");
+        list = lru.getLRU();
+        for(Object o: list)
+            System.out.print(o.toString() + " ");
+        System.out.println();
+    }
+}
+ 
+
+
+
+
+
 // A C program to show implementation of LRU cache
 #include <stdio.h>
 #include <stdlib.h>

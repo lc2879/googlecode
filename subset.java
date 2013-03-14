@@ -20,3 +20,9 @@ public static void printSets(ArrayList<Integer> sets){
 	System.out.print('\n');
 	return;
 }
+////////
+
+  if(!result.contains(subset))
+                result.add(subset);
+
+//////

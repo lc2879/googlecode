@@ -1,0 +1,2986 @@
+abc
+#include <stdio.h>
+#include <stdlib.h>
+ 
+/* A binary tree node has data, pointer to left child
+   and a pointer to right child */
+struct node
+{
+    int data;
+    struct node* left;
+    struct node* right;
+};
+ 
+struct node* newNode(int );
+ 
+/* Function to find least comman ancestor of n1 and n2 */
+int leastCommanAncestor(struct node* root, int n1, int n2)
+{
+  /* If we have reached a leaf node then LCA doesn't exist
+     If root->data is equal to any of the inputs then input is
+     not valid. For example 20, 22 in the given figure */ 
+  if(root == NULL || root->data == n1 || root->data == n2)
+    return -1;
+   
+  /* If any of the input nodes is child of the current node
+     we have reached the LCA. For example, in the above figure
+     if we want to calculate LCA of 12 and 14, recursion should
+     terminate when we reach 8*/
+  if((root->right != NULL) &&
+    (root->right->data == n1 || root->right->data == n2))
+    return root->data;
+  if((root->left != NULL) &&
+    (root->left->data == n1 || root->left->data == n2))
+    return root->data;   
+     
+  if(root->data > n1 && root->data < n2)
+    return root->data;
+  if(root->data > n1 && root->data > n2)
+    return leastCommanAncestor(root->left, n1, n2);
+  if(root->data < n1 && root->data < n2)
+    return leastCommanAncestor(root->right, n1, n2);
+}   
+ 
+/* Helper function that allocates a new node with the
+   given data and NULL left and right pointers. */
+struct node* newNode(int data)
+{
+  struct node* node = (struct node*)
+                       malloc(sizeof(struct node));
+  node->data  = data;
+  node->left  = NULL;
+  node->right = NULL;
+ 
+  return(node);
+}
+ 
+/* Driver program to test mirror() */
+int main()
+{
+  struct node *root  = newNode(2);
+  root->left         = newNode(1);
+  root->right        = newNode(4);
+  root->right->left  = newNode(3);
+  root->right->right = newNode(5);
+ 
+/* Constructed binary search tree is
+            2
+           / \
+         1   4
+             / \
+           3   5
+*/
+  printf("\n The Least Common Ancestor is \n");
+  printf("%d", leastCommanAncestor(root, 3, 5));
+ 
+  getchar();
+  return 0;
+}
+#include <stdio.h>
+
+int my_atoi(char *string) {
+  
+  int negative = 0;
+  int value = 0;
+  char *start;
+
+if (string == NULL) /* if data passed in is null */
+    return 0;
+
+start = string;
+
+while(*start == ' ') /* ignore pre-whitespaces */
+    start++;
+
+if (*start == '-') { 
+    negative = 1;
+    start++;
+  }
+
+while (*start != '\0') {
+    if (*start >= '0' && *start <= '9') { /* numeric characters */
+      if (negative == 0 && value * 10 + ((int)*start - '0') < value) { /* check for + buffer overflow */
+        printf("buffer overflow \n");
+        return 0;
+      }
+      if (negative == 1 && (((-value) * 10) - ((int)*start - '0') > -value)) { /* check for - buffer overflow */
+        printf("buffer overflow \n");
+        return 0;
+      }
+      value = value * 10 + ((int)*start - '0');
+    }
+
+start++;
+  }
+
+if (negative)
+    value = -value;
+
+return value;
+}
+public class bfsG{
+
+
+  public class gNode{
+	int value;
+	int state;
+	ArrayList<gNode> children;
+  }
+  public class Graph{
+	ArrayList<gNode> nodes;
+   }
+ public enum state{ visited,unvisited,visiting}
+/*Bfs non-recursive,whether there is a route from start to end*/
+public Boolean isConnected(Graph g,gNode start, gNode end){
+
+  LinkedList<gNode> q= new LinkedList<gNode>();
+
+  for(gNode node:g.nodes){
+        node.state= state.unvisited;
+       }
+        start.state=visiting;
+        q.add(start);
+        gNode u= new gNode();
+	while(!q.isEmpty){
+		u=q.removeFirst();
+	       if(u!=null){
+		for(gNode v:u.children){
+		  if(v.state==state.unvisited){
+			if(v==end)return true;
+			else{
+				v.state=visiting;
+				q.add(v);
+			}
+		}
+	   }
+	
+	u.state=visited;
+    }
+  }
+return false;
+}
+
+
+
+}
+/*recursive version*/
+public static int binarySearch(int a [] ,int x, int start, int end){
+	if(start > end) return -1;
+	int mid = end +(start- end )/2;
+	if(a[mid]==x) return mid;
+	if(a[mid]<x) return binarySearch(a,x,mid+1,end);
+	return binarySearch(a,x,start,mid-1);
+}
+
+/*non-recursive version*/
+public static int binarySearch(int a [], int x){
+	int start=0;int end =a.length-1;int mid;
+	while(start<=end){
+		mid=end+(start-end)/2;
+		if(a[mid]==x) return mid;
+		else if(a[mid]<x) start = mid+1;
+		else end = mid -1;
+	}
+	return -1;
+}	
+
+/*nearest node,using recursive approach */
+public static int binarySearch(Node root, int n){
+		if(root==null) return -1;
+		Node pRet=null;
+		if(root.value>n) pRet=binarySearch(root.left,n);
+		else		 pRet=binarySearch(root.right,n);
+		if(pRet!=-1) return pRet;
+		if(root.value>n) return root.value;
+		return -1;
+	}
+public String addBinaryNumbers(String num1, String num2) {
+        
+        String longestNumber = num1.length() > num2.length() ? num1 : num2;
+
+int padCount = longestNumber == num1 ? num1.length() - num2.length() : num2.length() - num1.length();
+
+String pad = "";
+        
+        for(int i = 0; i < padCount; i++)
+        	pad += "0";
+        
+        if(longestNumber == num1)
+        {
+        	num2 = pad + num2;
+        }
+        else
+        {
+        	num1 = pad + num1;
+        }
+
+String result = "";
+        int carry = 0;
+
+for(int i = longestNumber.length() - 1; i >= 0; i--)
+        {
+            int num1Int = Integer.parseInt(num1.charAt(i)+"");
+            int num2Int = Integer.parseInt(num2.charAt(i)+"");
+
+int currentSum = num1Int + num2Int + carry;
+            if(currentSum >= 2)
+            {
+                carry = 1;
+                if(currentSum == 2)
+                	result += "0";
+                else
+                	result += "1";
+            }
+            else
+            {
+                carry = 0;
+                result += currentSum;
+            }   
+        }
+
+if(carry == 1)
+            result += carry;
+        
+        String finalResult = "";
+        for(int i = result.length() - 1; i >= 0; i--)
+            finalResult += result.charAt(i);
+        
+        return finalResult;
+    }
+
+
+// break a string into a couple meaningful words
+
+
+[1..length(w)] be a table with Boolean entries. S[i] is true if the word w[1..i] can be split. Then set S[1] = isWord(w[1]) and for i=2 to length(w) calculate
+
+S[i] = (isWord[w[1..i] or for any j in {2..i}: S[j-1] and isWord[j..i]).
+
+public static Boolean[] s =new Boolean [sq.length];
+public static sq="Iloveyou";
+public Boolean split(String sq){
+	if (s[sq.length]!=null)
+		return s[sq.length];
+	for(int i=sq.length-1;i>0;i--)
+		if(isWord(sq.subString(i))
+		&&split(sq.subString(0,i))
+		{
+		 s[sq.length]=true;
+		return true;
+	}
+return false;
+	
+public int  findNodes(Node root, int sum){
+
+	if (root==null) return -1;
+	Node cur= root;
+	Stack<Node> left = new Stack<Node>();
+	Stack<Node> right = new Stack<Node>();
+	while(cur!=null){
+		left.push(cur);
+		cur=cur.left;
+		}
+	cur=root;
+	 while(cur.right!=null){
+                cur=cur.right;
+		right.push(cur);
+                }
+	while(left.peek()<right.peek()){
+		if(left.peek()+right.peek() == sum)	
+			return 1;
+		else if(left.peek()+right.peek()> sum){
+			cur=right.pop();
+			if(cur.left!=null){
+				right.push(cur.left);
+				cur=cur.left;
+				while(cur.right!=null){
+					right.push(cur.right);
+					}
+			}
+			}
+		else (left.peek()+right.peek()< sum){
+			cur=left.pop();
+                        if(cur.right!=null){
+                                left.push(cur.right);
+				cur=cur.right;
+                                while(cur.left!=null){
+                                        left.push(cur.left);
+                                        }
+                        }
+                        }
+		}
+	return -1;
+}
+
+			
+public void InsertCircular(List head, int value) {
+    List current = head;
+    if (value > head.value) {
+        current = head;
+        while(current.value < value && current.value < current.next.value) {
+            current = current.next;
+        }
+
+    } else {
+        while(current.value < current.next.value) {
+            current = current.next;
+        }
+        //go to largest value
+        while(current.next.value < value) {
+            current = current.next;
+        }
+    }
+    ListNode addedNode = new ListNode(value);
+    addedNode.next = current.next;
+    current.next = addedNode;
+}
+public class comAncester{
+
+
+/*with and without parent infomation*/
+
+
+
+
+/*is BST or is not BST*/
+
+public static Node commonAncester(Node root,Node v1,Node v2){
+
+	   if(root==null||root.value==v1.value||root.value==v2.value) return null;
+	   if(root.left!=null&&(root.left.value==v1.value||root.left.value==v2.value)
+	        || root.right!=null&&(root.right.value==v1.value||root.right.value==v2.value)
+	        ||root.value>v1.value&&root.value<v2.value)
+	          return root;
+	   if(root.value>v1.value&&root.value>v2.value)
+	        return commonAncester(root.left,v1,v2);
+	    if(root.value<v1.value&&root.value<v2.value)
+	        return commonAncester(root.right,v1,v2);
+	   return null;
+	}
+/*non-BST*/
+public static Node commonAncester1(Node root,Node v1,Node v2){
+    if(root==null) return null;
+    Node left = commonAncester(root.left,v1,v2);
+    if(left!=null&&left!=v1&&left!=v2) return left;
+    Node right = commonAncester(root.right,v1,v2);
+     if(right!=null&&right!=v1&&right!=v2) return right;
+
+    if(left!=null &&right!=null) return root;
+    else if(root ==v1||root==v2) return root;
+      else return left==null ? right:left;
+}
+
+	public static void print(String str){
+        if(str==null) return;
+        for(int i=0;i<str.length();i++){
+                System.out.print(str.charAt(i));
+                if(i<str.length()-1&&(int)str.charAt(i+1)!=(int)str.charAt(i)+1)
+                        System.out.print('\n');
+                }
+return;
+}
+public void printValue(node * root,int level, node* target,bool isleft, int d){
+
+if(!root||!target) return;
+if(isleft==true&&d>level)
+	printf(root.value);
+if(root.value=target.value){
+printValue(root.left, target, true, d+1);
+printValue(root.right, target, false, d+1);
+}
+else{
+printValue(root.left, target, true, d+1);
+printValue(root.right, target, false, d+1);
+}
+return;
+}
+public static int depth(Node root,int d){
+	if(root == null) return d-1;
+	else return Math.MAX(depth(root.left, d+1),depth(root.right,d+1);
+}
+// A C / C++ program for Dijkstra's single source shortest path algorithm.
+// The program is for adjacency matrix representation of the graph
+ 
+#include <stdio.h>
+#include <limits.h>
+ 
+// Number of vertices in the graph
+#define V 9
+ 
+// A utility function to find the vertex with minimum distance value, from
+// the set of vertices not yet included in shortest path tree
+int minDistance(int dist[], bool sptSet[])
+{
+   // Initialize min value
+   int min = INT_MAX, min_index;
+ 
+   for (int v = 0; v < V; v++)
+     if (sptSet[v] == false && dist[v] < min)
+         min = dist[v], min_index = v;
+ 
+   return min_index;
+}
+ 
+// A utility function to print the constructed distance array
+int printSolution(int dist[], int n)
+{
+   printf("Vertex   Distance from Source\n");
+   for (int i = 0; i < V; i++)
+      printf("%d \t\t %d\n", i, dist[i]);
+}
+ 
+// Funtion that implements Dijkstra's single source shortest path algorithm
+// for a graph represented using adjacency matrix representation
+void dijkstra(int graph[V][V], int src)
+{
+     int dist[V];     // The output array.  dist[i] will hold the shortest
+                      // distance from src to i
+ 
+    bool sptSet[V]; // sptSet[i] will true if vertex i is included in shortest
+                     // path tree or shortest distance from src to i is finalized
+ 
+     // Initialize all distances as INFINITE and stpSet[] as false
+     for (int i = 0; i < V; i++)
+        dist[i] = INT_MAX, sptSet[i] = false;
+ 
+     // Distance of source vertex from itself is always 0
+     dist[src] = 0;
+ 
+     // Find shortest path for all vertices
+     for (int count = 0; count < V-1; count++)
+     {
+        // Pick the minimum distance vertex from the set of vertices not
+        // yet processed. u is always equal to src in first iteration.
+        int u = minDistance(dist, sptSet);
+ 
+        // Mark the picked vertex as processed
+        sptSet[u] = true;
+ 
+        // Update dist value of the adjacent vertices of the picked vertex.
+        for (int v = 0; v < V; v++)
+ 
+          // Update dist[v] only if is not in sptSet, there is an edge from 
+          // u to v, and total weight of path from src to  v through u is 
+          // smaller than current value of dist[v]
+          if (!sptSet[v] && graph[u][v] && dist[u] + graph[u][v] < dist[v])
+            dist[v] = dist[u] + graph[u][v];
+     }
+ 
+     // print the constructed distance array
+     printSolution(dist, V);
+}
+ 
+// driver program to test above function
+int main()
+{
+   /* Let us create the example graph discussed above */
+   int graph[V][V] = {{0, 4, 0, 0, 0, 0, 0, 8, 0},
+                      {0, 0, 8, 0, 0, 0, 0, 11, 0},
+                      {0, 8, 0, 7, 0, 4, 0, 0, 2},
+                      {0, 0, 7, 0, 9, 14, 0, 0, 0},
+                      {0, 0, 0, 9, 0, 10, 0, 0, 0},
+                      {0, 0, 4, 0, 10, 0, 2, 0, 0},
+                      {0, 0, 0, 14, 0, 2, 0, 1, 6},
+                      {8, 11, 0, 0, 0, 0, 1, 0, 7},
+                      {0, 0, 2, 0, 0, 0, 6, 7, 0}
+                     };
+ 
+    dijkstra(graph, 0);
+ 
+    return 0;
+}
+
+//Write a function that takes an array of five integers, each of which is between 
+//1 and 10, and returns the number of combinations of those integers that sum to 15. 
+//For example, calling the function with the array [1, 2, 3, 4, 5] should return 1, while 
+//calling it with [5, 5, 10, 2, 3] should return 4 (5 + 10, 5 + 10, 5 + 5 + 2 + 3, 10 + 2 + 3). 
+//You may assume that the input has already been validated. Show how you would test this function.
+
+
+public static int findNumOfCom(int []a ,int n, int sum){
+
+ if(a==null) return -1;
+ if(n==0) return 0;
+ if(sum==0) return -1;
+ int [][] tmp = new int [n][sum+1];
+
+ /*initialization */
+ for (int i =0;i<n;i++)
+	tmp[i][0]=1;
+// important
+ if(a[0]<sum) tmp[0][a[0]]=1;
+ for(int i=1;i<n;i++)	
+	for( int j=0;j<sum+1;j++){
+		assert(a[i]>0);
+		if(j>=a[i])
+			tmp[i][j]=tmp[i-1][j-a[i]]+tmp[i-1][j];
+		else
+			tmp[i][j]=tmp[i-1][j];
+		}
+return tmp [n-1][sum];
+}
+public class MazeGame {
+  public MazeGame() {
+     Room room1 = makeRoom();
+     Room room2 = makeRoom();
+     room1.connect(room2);
+     this.addRoom(room1);
+     this.addRoom(room2);
+  }
+ 
+  protected Room makeRoom() {
+     return new OrdinaryRoom();
+  }
+}
+public class MagicMazeGame extends MazeGame {
+  @Override
+  protected Room makeRoom() {
+      return new MagicRoom();
+  }
+}
+class Complex {
+     public static Complex fromCartesianFactory(double real, double imaginary) {
+         return new Complex(real, imaginary);
+     }
+     public static Complex fromPolarFactory(double modulus, double angle) {
+         return new Complex(modulus * cos(angle), modulus * sin(angle));
+     }
+     private Complex(double a, double b) {
+         //...
+     }
+}
+ 
+Complex product = Complex.fromPolarFactory(1, pi);
+public class ImageReaderFactory {
+    public static ImageReader imageReaderFactoryMethod(InputStream is) {
+        ImageReader product = null;
+ 
+        int imageType = determineImageType(is);
+        switch (imageType) {
+            case ImageReaderFactory.GIF:
+                product = new GifReader(is);
+                break;
+            case ImageReaderFactory.JPEG:
+                product = new JpegReader(is);
+                break;
+            //...
+        }
+        return product;
+    }
+}
+
+//An array is of size N with integers between 0 and 1024(repetitions allowed). 
+//Another array of integers is of size M with no constraints on the numbers. 
+//Find which elements of first array are present in the second array. 
+//(If you are using extra memory, think of minimizing that still, using bitwise operators)
+public static void findNum(int []a, int [] b, int n, int m){
+
+    if(a==null || b == null || n==0|| m == 0)return ;
+    final int size= (1025+31)/32;
+    int [] tmp = new int [size];
+  //  for(int i=0;i<size;i++) tmp [i]='0';
+    for(int i=0;i<n;i++){
+            int index = a[i] / 32;
+            int bit =a[i]% 32;
+            tmp[index] |= 1<<bit;
+            }
+    for(int i=0;i<m;i++){
+            if(b[i]>1024||b[i]<0) continue;
+            
+            if((tmp[b[i]/32] & (1<<(b[i]%32)))!=0){
+                    System.out.print(b[i]+" ");
+                    tmp[b[i]/32]&=~(1<<b[i]%32);
+            }
+    }
+}	
+public static void groupWords(String [] words){
+
+	String words
+public static void revListBybits (LinkedNode head, int len){
+	int j = n-1;
+	for (int i = 0; i < j; i++,j--)
+	{
+		a[i] = a[i]^a[j];
+		a[j] = a[i]^a[j];
+		a[i] = a[i]^a[j];
+	}
+}
+public class inSecOfList{
+
+  public static LinkedNode intersection(LinkedNode head1,LinkedNode head2){
+             /*check if the two lists are intersected*/
+               
+              if(head1==null||head2==null) return null;
+              int len1=0;
+              int len2=0;
+              LinkedNode tmp1=head1;
+	      LinkedNode tmp2=head2;
+              while(tmp1!=null){
+                       len1++;tmp1=tmp1.next;
+		}
+              while(tmp2!=null){
+                       len2++;tmp2=tmp2.next;
+                }
+              int dif= (len1-len2)>0? len1-len2:len2-len1;
+              tmp1=(len1-len2)>0? head2:head1;
+	      tmp2=(len1-len2)>0? head1:head2; 
+              while(dif>0){tmp2=tmp2.next;dif--;}
+              while(tmp1!=tmp2){tmp1=tmp1.next;tmp2=tmp2.next;}
+	return tmp1;
+}
+
+}
+import java.util.HashSet;
+
+
+public class isAllUni{
+
+      public static Boolean isAllUnique(String test){
+          /*is a null string allowed?*/
+        if(test==null)
+          return false;
+ 
+        char [] allChar = test.toCharArray();
+
+        HashSet charSet= new HashSet();
+        
+        /*what charSet are we talking about?*/
+        /*if string is longer than 256, return false*/
+        if(allChar.length>256)
+          return false;  
+
+        for(int i =0;i<allChar.length;i++) {
+
+             if (charSet.contains(allChar[i]))
+                return false;
+             charSet.add(allChar[i]);
+        }
+           return true;
+
+}
+
+       public static  void main(String[] arg){
+                String [] testCase={"aa","abc","123a3",""};
+                for(String test : testCase)
+                System.out.println(test+" "+isAllUnique(test));
+
+       }
+
+}
+
+public class isBalanced{
+ public static int  isBalanced(Node root){
+         if (root==null) return 0;
+         int lHight,rHight;
+         if((lHight=isBalanced(root.left))==-1||(rHight=isBalanced(root.right))==-1||Math.abs(lHight-rHight)>1)
+                return -1;
+         return Math.max(lHight,rHight)+1;
+}
+}
+
+
+//map reduce problems should be given more attention
+public class isBST{
+	public static class Node{
+		public  Node left;
+ 		public  Node right;
+  		public  int  value;
+	}
+   	public static int lastEle=Integer.MIN_VALUE;
+/*recursive and non-recursive approach*/
+/*in order traversal*/
+public static Boolean isBSTree(Node root){
+	 if(root==null) return true;
+         if(!isBSTree(root.left)) return false;
+	 if(root.value<lastEle){
+                return false;
+              }
+         lastEle=root.value;
+         if(!isBSTress(root.right))return false;
+return true;
+}
+
+public static Boolean isBSTree1(Node root){
+if(root==null) return true;
+Node current = root;
+Stack<Node> nodes= new Stack<Node>();
+//nodes.push(current);
+//current=current.left;
+while(!nodes.isEmpty()||current!=null){   // take care of the root
+		while(current!=null){
+			nodes.push(current);
+			current=current.left;
+			}
+        Node tmp= nodes.pop();
+	if(tmp.value<lastEle) return false;
+	lastEle=tmp.value;
+        current=tmp.right;
+}
+return true;
+}
+
+public static void main(String [] args){
+
+  Node b5= new Node();
+                b5.value=0;
+                b5.left=null;
+                b5.right=null;
+                
+                Node b4= new Node();
+                b4.value=1;
+                b4.left=b5;
+                b4.right=null;
+                
+                Node b3= new Node();
+                b3.value=-3;
+                b3.left=null;
+                b3.right=null;
+                
+                Node b1= new Node();
+                b1.value=-1;
+                b1.left=b3;
+                b1.right=b4;
+                
+                Node b2= new Node();
+                b2.value=5;
+                b2.left=null;
+                b2.right=null;
+                
+                Node root= new Node();
+                root.value=2;
+                root.left=b1;
+                root.right=b2;
+                
+                
+                System.out.println(isBSTree1(root));
+                
+                
+                               
+}
+
+}
+public static Boolean 
+
+public static int isOnce(int [] a, int n){
+int result=0;
+int x,sum;
+for (int i=0;i<32;i++){
+        sum=0;
+        x=(1<<i);
+        for(int j=0;j<n;j++){
+                if((a[j]&x)!=0)
+                        {sum++;}
+        }
+        if((sum % 3 )!=0)
+                result|=x;
+}
+return result;
+}
+
+public  class isPalindrome{
+
+public static class LinkedNode{
+
+public int data;
+public LinkedNode next;
+
+}
+	  public static Boolean isPdrome(LinkedNode head,int len){
+
+    	  if(head==null||head.next==null||len==1||len==2&&head.data==head.next.data)
+               return true;
+    	   LinkedNode runner=head;
+    	  int length=len;
+    	  while(length-1>0){
+    	     length--;
+    	     runner=runner.next;
+    	  }
+            if(runner.data==head.data)
+    	    return isPdrome(head.next,len-2);
+              else return false;
+
+    	  }
+	public static Boolean isPdrome1(LinkedNode head){
+		if(head==null||head.next==null) return true;
+		if(head.next.next==null&&head.data==head.next.data) return true;
+		LinkedNode slow=head;
+		LinkedNode fast=head;
+		LinkedNode tmp=head.next;
+		while(fast.next!=null && fast.next.next!=null){
+			fast=fast.next.next;
+			LinkedNode helper=tmp.next;	
+			tmp.next = slow;
+			slow=tmp;
+			tmp=helper;
+			}
+		LinkedNode p1=null;
+		LinkedNode p2=null;
+		if(fast.next==null){
+			p2=tmp;p1=slow.next;}
+		if(fast.next.next==null){
+			p2=tmp;p1=slow;}
+		LinkedNode f1=p1;
+		LinkedNode f2=p2;
+		while( f2.next!=null && f2!=null){
+			if(f1.data!=f2.data) return false;
+			f2=f2.next;
+			LinkedNode helper = f1.next;
+			f1.next.next = f1;
+			f1=helper;
+			}
+		if(slow!=p1) p1.next = slow;
+		slow.next=p2;
+ 		return true;
+}
+
+/*differnt approach , reverse the linked list and then compare the origin one with the reversed one ,space complexity */
+   public static LinkedNode reverseList(LinkedNode head){
+
+    	  if(head.next==null||head==null)
+    	   return head;
+    	  if(head.next.next==null)
+    	  {
+    	  head.next.next=head;
+    	  LinkedNode newHead=head.next;
+    	  head.next=null;
+    	  return newHead;
+    	  }
+    	  LinkedNode cur=head;
+    	  LinkedNode pur=head.next;
+    	  LinkedNode eur=head.next.next;
+    	  pur.next=cur;
+    	  cur.next=null;
+    	  while(eur!=null){
+    	  cur=pur;
+    	  pur=eur;
+    	  eur=eur.next;
+    	  pur.next=cur;
+    	  }
+    	  return pur;
+    	  }
+
+
+/*recursive approach to reverse a list*/
+    public static LinkedNode revList(LinkedNode head){
+		if(head==null||head.next==null) return head;
+                LinkedNode cur=revList(head.next);
+                head.next.next=head;
+                head.next=null;
+               return cur;   
+}
+
+
+
+	
+		
+
+
+/*using stack based iterative approach*/
+/*suppose we don't know the size of the linkedlist*/
+   public static Boolean  isp(LinkedNode head){
+
+LinkedNode slow=head;
+LinkedNode fast=head;
+Stack<Integer> fstHalf = new Stack<Integer>();
+while(fast!=null&&fast.next!=null){
+fstHalf.push(slow.data);
+slow=slow.next;
+fast=fast.next.next;
+}
+/*skip middle elements if the length is odd*/
+if(fast!=null)
+   slow=slow.next;
+
+while(slow!=null){
+
+if(fstHalf.pop()!=slow.data)
+   return false;
+slow=slow.next;
+}
+return true;
+
+}
+
+public static void main(String [] args){
+
+LinkedNode head = new LinkedNode();
+LinkedNode a1= new LinkedNode();
+LinkedNode a2= new LinkedNode();
+LinkedNode a3= new LinkedNode();
+LinkedNode a4= new LinkedNode();
+LinkedNode a5= new LinkedNode();
+LinkedNode a6= new LinkedNode();
+head.data = 1;
+head.next = a1;
+a1.data=2;
+a1.next=a2;
+a2.data=3;
+a2.next=a3;
+a3.data=4;
+a3.next=a4;
+a4.data=3;
+a4.next=a5;
+a5.data=2;
+a5.next=a6;
+a6.data=1;
+a6.next=null;
+LinkedNode runner= head;
+int len =0;
+while(runner!=null){
+   len++;
+   runner=runner.next;
+}
+System.out.println("the linked list is palindrome: "+isPdrome(head,len));
+
+}
+
+
+}
+
+-public class rmDups{
+-
+-   public static class LinkedNode{
+-
+-	    	  public int data;
+-	    	  public LinkedNode next;
+-
+-	    	  public LinkedNode()
+-	    	  {}
+-	    	  
+-	    	  }
+-public static void rmDuplicate(LinkedNode head){
+-if(head==null)return;
+-HashSet<Integer> ele = new HashSet<Integer>();
+-LinkedNode cur=head;
+-ele.add(cur.data);
+-while(cur.next!=null){
+-
+-if(ele.contains(cur.next.data)){
+-cur.next=cur.next.next;
+-continue;
+-}
+-else{
+-   ele.add(cur.next.data);
+-   cur=cur.next;
+-}
+-}
+-
+-}
+-
+-public static void main (String [] args){
++public class rmdups{
+ 
++public class LinkNode{
+ 
++   private int data;
++   public LinkNode next;
++   public int get()
++  { return data;
++}
+ }
+ 
+
+import java.util.Arrays;
+
+
+
+public class isPermutation{
+
+
+public static Boolean isPmt(String a,String b){
+
+		/*is the anagram case sensitive? is whitespace significant?*/
+       	if(a.length()!=b.length())
+		return false;
+
+		char [] alist= a.toCharArray();
+		char [] blist= b.toCharArray();
+        java.util.Arrays.sort(alist);
+		java.util.Arrays.sort(blist);
+
+		for(int i =0;i<alist.length;i++)	
+			if(alist[i]!=blist[i])
+				return false;
+		
+		return true;
+
+		
+	 }
+
+
+public static Boolean isPmt1(String a ,String b)
+{
+     if(a.length()!=b.length()||a==null||b==null)
+                return false;
+
+     int [] count= new int [256];
+
+     char [] alist= a.toCharArray();
+     char [] blist= b.toCharArray();
+      for(int i =0;i<alist.length;i++){
+        count[alist[i]]++;
+         count[blist[i]]--;
+}
+      for(int j=0;j<256;j++)
+          if(count[j]<0)
+                return false;
+
+return true;
+}
+
+
+public static void main(String[] args){
+
+                String a="adfads";
+                String b="abc";
+                String c="abc";
+                System.out.println(a+" "+b+" "+isPmt(a,b));
+                System.out.println(c+" "+b+" "+isPmt(c,b));
+
+
+
+
+}
+
+
+}
+public static Boolean isSubTree(Node root1,Node root2){
+
+	if(root2==null) return true;
+	 if(root1==null) return false;
+	 if( root1.value==root2.value) return isIdentical(root1,root2);
+		else return (isSubTree(root1.left,root2)|| isSubTree(root1.right,root2));
+	}
+public static Boolean isIdentical(Node root1,Node root2){
+
+	if( root1==null&& root2==null) return true;
+	if( root1==null || root2==null ) return false;
+	 if (root1.value !=root2.value) return false;
+        return isIdentical(root1.left,root2.left) && isIdentical ( root1.right, root2.right);
+}
+
+
+public static Boolean isWord(String word){}
+
+public static Boolean isSplit(String wordList){
+ 	while(int 
+	String pre = wordList.subString(i); 
+
+
+Find the k most frequent words from a file
+
+September 26, 2012
+
+
+
+Given a book of words. Assume you have enough main memory to accommodate all words. design a data structure to find top K maximum occurring words. The data structure should be dynamic so that new words can be added. 
+
+A simple solution is to use Hashing. Hash all words one by one in a hash table. If a word is already present, then increment its count. Finally, traverse through the hash table and return the k words with maximum counts.
+
+We can use Trie and Min Heap to get the k most frequent words efficiently. The idea is to use Trie for searching existing words adding new words efficiently. Trie also stores count of occurrences of words. A Min Heap of size k is used to keep track of k most frequent words at any point of time(Use of Min Heap is same as we used it to find k largest elements in this post).
+ Trie and Min Heap are linked with each other by storing an additional field in Trie .indexMinHeap. and a pointer .trNode. in Min Heap. The value of .indexMinHeap. is maintained as -1 for the words which are currently not in Min Heap (or currently not among the top k frequent words). For the words which are present in Min Heap, .indexMinHeap. contains, index of the word in Min Heap. The pointer .trNode. in Min Heap points to the leaf node corresponding to the word in Trie.
+
+Following is the complete process to print k most frequent words from a file.
+
+Read all words one by one. For every word, insert it into Trie. Increase the counter of the word, if already exists. Now, we need to insert this word in min heap also. For insertion in min heap, 3 cases arise:
+
+1. The word is already present. We just increase the corresponding frequency value in min heap and call minHeapify() for the index obtained by .indexMinHeap. field in Trie. When the min heap nodes are being swapped, we change the corresponding minHeapIndex in the Trie. Remember each node of the min heap is also having pointer to Trie leaf node.
+
+2. The minHeap is not full. we will insert the new word into min heap & update the root node in the min heap node & min heap index in Trie leaf node. Now, call buildMinHeap().
+
+3. The min heap is full. Two sub-cases arise.
+..3.1 The frequency of the new word inserted is less than the frequency of the word stored in the head of min heap. Do nothing.
+
+..3.2 The frequency of the new word inserted is greater than the frequency of the word stored in the head of min heap. Replace & update the fields. Make sure to update the corresponding min heap index of the .word to be replaced. in Trie with -1 as the word is no longer in min heap.
+
+4. Finally, Min Heap will have the k most frequent words of all words present in given file. So we just need to print all words present in Min Heap.
+
+
+
+
+// A program to find k most frequent words in a file
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+ 
+# define MAX_CHARS 26
+# define MAX_WORD_SIZE 30
+ 
+// A Trie node
+struct TrieNode
+{
+    bool isEnd; // indicates end of word
+    unsigned frequency;  // the number of occurrences of a word
+    int indexMinHeap; // the index of the word in minHeap
+    TrieNode* child[MAX_CHARS]; // represents 26 slots each for 'a' to 'z'.
+};
+ 
+// A Min Heap node
+struct MinHeapNode
+{
+    TrieNode* root; // indicates the leaf node of TRIE
+    unsigned frequency; //  number of occurrences
+    char* word; // the actual word stored
+};
+ 
+// A Min Heap
+struct MinHeap
+{
+    unsigned capacity; // the total size a min heap
+    int count; // indicates the number of slots filled.
+    MinHeapNode* array; //  represents the collection of minHeapNodes
+};
+ 
+// A utility function to create a new Trie node
+TrieNode* newTrieNode()
+{
+    // Allocate memory for Trie Node
+    TrieNode* trieNode = new TrieNode;
+ 
+    // Initialize values for new node
+    trieNode->isEnd = 0;
+    trieNode->frequency = 0;
+    trieNode->indexMinHeap = -1;
+    for( int i = 0; i < MAX_CHARS; ++i )
+        trieNode->child[i] = NULL;
+ 
+    return trieNode;
+}
+ 
+// A utility function to create a Min Heap of given capacity
+MinHeap* createMinHeap( int capacity )
+{
+    MinHeap* minHeap = new MinHeap;
+ 
+    minHeap->capacity = capacity;
+    minHeap->count  = 0;
+ 
+    // Allocate memory for array of min heap nodes
+    minHeap->array = new MinHeapNode [ minHeap->capacity ];
+ 
+    return minHeap;
+}
+ 
+// A utility function to swap two min heap nodes. This function
+// is needed in minHeapify
+void swapMinHeapNodes ( MinHeapNode* a, MinHeapNode* b )
+{
+    MinHeapNode temp = *a;
+    *a = *b;
+    *b = temp;
+}
+ 
+// This is the standard minHeapify function. It does one thing extra.
+// It updates the minHapIndex in Trie when two nodes are swapped in
+// in min heap
+void minHeapify( MinHeap* minHeap, int idx )
+{
+    int left, right, smallest;
+ 
+    left = 2 * idx + 1;
+    right = 2 * idx + 2;
+    smallest = idx;
+    if ( left < minHeap->count &&
+         minHeap->array[ left ]. frequency <
+         minHeap->array[ smallest ]. frequency
+       )
+        smallest = left;
+ 
+    if ( right < minHeap->count &&
+         minHeap->array[ right ]. frequency <
+         minHeap->array[ smallest ]. frequency
+       )
+        smallest = right;
+ 
+    if( smallest != idx )
+    {
+        // Update the corresponding index in Trie node.
+        minHeap->array[ smallest ]. root->indexMinHeap = idx;
+        minHeap->array[ idx ]. root->indexMinHeap = smallest;
+ 
+        // Swap nodes in min heap
+        swapMinHeapNodes (&minHeap->array[ smallest ], &minHeap->array[ idx ]);
+ 
+        minHeapify( minHeap, smallest );
+    }
+}
+ 
+// A standard function to build a heap
+void buildMinHeap( MinHeap* minHeap )
+{
+    int n, i;
+    n = minHeap->count - 1;
+ 
+    for( i = ( n - 1 ) / 2; i >= 0; --i )
+        minHeapify( minHeap, i );
+}
+ 
+// Inserts a word to heap, the function handles the 3 cases explained above
+void insertInMinHeap( MinHeap* minHeap, TrieNode** root, const char* word )
+{
+    // Case 1: the word is already present in minHeap
+    if( (*root)->indexMinHeap != -1 )
+    {
+        ++( minHeap->array[ (*root)->indexMinHeap ]. frequency );
+ 
+        // percolate down
+        minHeapify( minHeap, (*root)->indexMinHeap );
+    }
+ 
+    // Case 2: Word is not present and heap is not full
+    else if( minHeap->count < minHeap->capacity )
+    {
+        int count = minHeap->count;
+        minHeap->array[ count ]. frequency = (*root)->frequency;
+        minHeap->array[ count ]. word = new char [strlen( word ) + 1];
+        strcpy( minHeap->array[ count ]. word, word );
+ 
+        minHeap->array[ count ]. root = *root;
+        (*root)->indexMinHeap = minHeap->count;
+ 
+        ++( minHeap->count );
+        buildMinHeap( minHeap );
+    }
+ 
+    // Case 3: Word is not present and heap is full. And frequency of word
+    // is more than root. The root is the least frequent word in heap,
+    // replace root with new word
+    else if ( (*root)->frequency > minHeap->array[0]. frequency )
+    {
+ 
+        minHeap->array[ 0 ]. root->indexMinHeap = -1;
+        minHeap->array[ 0 ]. root = *root;
+        minHeap->array[ 0 ]. root->indexMinHeap = 0;
+        minHeap->array[ 0 ]. frequency = (*root)->frequency;
+ 
+        // delete previously allocated memoory and
+        delete [] minHeap->array[ 0 ]. word;
+        minHeap->array[ 0 ]. word = new char [strlen( word ) + 1];
+        strcpy( minHeap->array[ 0 ]. word, word );
+ 
+        minHeapify ( minHeap, 0 );
+    }
+}
+ 
+// Inserts a new word to both Trie and Heap
+void insertUtil ( TrieNode** root, MinHeap* minHeap,
+                        const char* word, const char* dupWord )
+{
+    // Base Case
+    if ( *root == NULL )
+        *root = newTrieNode();
+ 
+    //  There are still more characters in word
+    if ( *word != '\0' )
+        insertUtil ( &((*root)->child[ tolower( *word ) - 97 ]),
+                         minHeap, word + 1, dupWord );
+    else // The complete word is processed
+    {
+        // word is already present, increase the frequency
+        if ( (*root)->isEnd )
+            ++( (*root)->frequency );
+        else
+        {
+            (*root)->isEnd = 1;
+            (*root)->frequency = 1;
+        }
+ 
+        // Insert in min heap also
+        insertInMinHeap( minHeap, root, dupWord );
+    }
+}
+ 
+ 
+// add a word to Trie & min heap.  A wrapper over the insertUtil
+void insertTrieAndHeap(const char *word, TrieNode** root, MinHeap* minHeap)
+{
+    insertUtil( root, minHeap, word, word );
+}
+ 
+// A utility function to show results, The min heap
+// contains k most frequent words so far, at any time
+void displayMinHeap( MinHeap* minHeap )
+{
+    int i;
+ 
+    // print top K word with frequency
+    for( i = 0; i < minHeap->count; ++i )
+    {
+        printf( "%s : %d\n", minHeap->array[i].word,
+                            minHeap->array[i].frequency );
+    }
+}
+ 
+// The main funtion that takes a file as input, add words to heap
+// and Trie, finally shows result from heap
+void printKMostFreq( FILE* fp, int k )
+{
+    // Create a Min Heap of Size k
+    MinHeap* minHeap = createMinHeap( k );
+    
+    // Create an empty Trie
+    TrieNode* root = NULL;
+ 
+    // A buffer to store one word at a time
+    char buffer[MAX_WORD_SIZE];
+ 
+    // Read words one by one from file.  Insert the word in Trie and Min Heap
+    while( fscanf( fp, "%s", buffer ) != EOF )
+        insertTrieAndHeap(buffer, &root, minHeap);
+ 
+    // The Min Heap will have the k most frequent words, so print Min Heap nodes
+    displayMinHeap( minHeap );
+}
+ 
+// Driver program to test above functions
+int main()
+{
+    int k = 5;
+    FILE *fp = fopen ("file.txt", "r");
+    if (fp == NULL)
+        printf ("File doesn't exist ");
+    else
+        printKMostFreq (fp, k);
+    return 0;
+}
+ 
+
+public class kth{
+
+   public static class LinkedNode{
+
+	    	  public int data;
+	    	  public LinkedNode next;
+
+	    	  public LinkedNode()
+	    	  {}
+	    	  
+	    	  }
+/*wrapper class*/
+    public static class wrapper{
+            public int value=0;
+      }
+/*recursive method*/
+public static LinkedNode thekth(LinkedNode head,int k,wrapper i){
+
+	if(!k>0)
+           return null;
+         
+ if(head==null) return null;
+ LinkedNode t=thekth(head.next,k,i);
+    i.value=i.value+1;
+    if(i.value==k)
+      return head;
+return  t;
+
+}
+
+/*non-recursive method, two pointers*/
+
+/*non-recursive method*/
+public static LinkedNode thekth1(LinkedNode head,int k){
+     if(!k>0)
+           return null;
+
+LinkedNode cur=head;
+LinkedNode pur=head;
+for (int i=0;i<k-1;k++){
+if(pur==null) return null;
+pur=pur.next;
+}
+if(pur==null) return null;
+while(pur.next!=null){
+cur=cur.next;
+pur=pur.next;
+}
+return cur;
+}
+
+public static void main(String[] args){
+
+
+
+
+}
+
+
+
+}
+/*longest common subsequence
+If last characters of both sequences match (or X[m-1] == Y[n-1]) then
+
+ L(X[0..m-1], Y[0..n-1]) = 1 + L(X[0..m-2], Y[0..n-2])
+
+If last characters of both sequences do not match (or X[m-1] != Y[n-1]) then
+
+ L(X[0..m-1], Y[0..n-1]) = MAX ( L(X[0..m-2], Y[0..n-1]), L(X[0..m-1], Y[0..n-2])
+*/
+public static String LCS(String str1,String str2){
+    if(str1==null||str2==null) return null;
+
+    char [] cha1= str1.toCharArray();
+    char [] cha2= str2.toCharArray();
+    int len1=cha1.length;
+    int len2=cha2.length;
+    int [][] t= new int [len1+1][len2+1];
+    for(int i=0;i<len1;i++)
+	for(int j=0;j<len2;j++){
+	    if(i==0||j==0)
+		t[i][j]=0;
+	    else if (cha1[i-1]==cha2[j-1])
+		t[i][j]=t[i-1][j-1];
+	    else
+		t[i][j]=Math.MAX(t[i-1][j],t[i][j-1]);
+	}
+return t[i][j];
+}
+
+
+
+
+public class levelPrt{
+
+/*BFS recursive and non-recursive*/
+
+public static ArrayList<LinkedList<Node>> print(Node root){
+
+if(root==null) return null;
+
+ArrayList<LinkedList<Node>> result = new  ArrayList<LinkedList<Node>>();
+LinkedList<Node> current = new LinkedList<Node>();
+current.add(root);
+while(1){
+   result.add(current);
+   LinkedList<Node> copy=current;
+   current=new  LinkedList<Node>();
+   for(Node ele:copy){
+	if(ele.left!=null)
+		current.add(ele.left);
+        if(ele.right!=null)
+                current.add(ele.right);
+    }
+   if(current.size()==0)
+       break;
+}
+return result;
+}
+public static void print(Node root){
+
+if(root==null) return;
+
+LinkedList<Node> current = new LinkedList<Node>();
+current.add(root);
+whilet(true){
+   LinkedList<Node> copy=current;
+   current=new  LinkedList<Node>();
+   for(Node ele:copy){
+        System.out.print(ele.value);
+        if(ele.left!=null)
+                current.add(ele.left);
+        if(ele.right!=null)
+                current.add(ele.right);
+   }
+  if(current.size()==0)
+       break;
+   System.out.print('\n');
+}
+return;
+}
+public static ArrayList<LinkedList<Node>> result = new  ArrayList<LinkedList<Node>>();
+public static void print(Node root,int level){
+
+if(root==null) return;
+
+if(result.size==level){
+       LinkedList<Node> current = new LinkedList<Node>();
+       current.add(root);
+       result.add(current);
+ }else{
+      result.get(level).add(root);}
+print(root.left,level+1);
+print(root.right,level+1);
+return;
+}
+
+
+
+
+}
+#include <stdio.h>
+#include <stdlib.h>
+ 
+struct node
+{
+    int data;
+    struct node *left;
+    struct node *right;
+    struct node *nextRight;
+};
+ 
+/* This function returns the leftmost child of nodes at the same level as p.
+   This function is used to getNExt right of p's right child
+   If right child of is NULL then this can also be sued for the left child */
+struct node *getNextRight(struct node *p)
+{
+    struct node *temp = p->nextRight;
+ 
+    /* Traverse nodes at p's level and find and return
+       the first node's first child */
+    while (temp != NULL)
+    {
+        if (temp->left != NULL)
+            return temp->left;
+        if (temp->right != NULL)
+            return temp->right;
+        temp = temp->nextRight;
+    }
+ 
+    // If all the nodes at p's level are leaf nodes then return NULL
+    return NULL;
+}
+ 
+/* Sets nextRight of all nodes of a tree with root as p */
+void connect(struct node* p)
+{
+    struct node *temp;
+ 
+    if (!p)
+      return;
+ 
+    // Set nextRight for root
+    p->nextRight = NULL;
+ 
+    // set nextRight of all levels one by one
+    while (p != NULL)
+    {
+        struct node *q = p;
+ 
+        /* Connect all childrem nodes of p and children nodes of all other nodes
+          at same level as p */
+        while (q != NULL)
+        {
+            // Set the nextRight pointer for p's left child
+            if (q->left)
+            {
+                // If q has right child, then right child is nextRight of
+                // p and we also need to set nextRight of right child
+                if (q->right)
+                    q->left->nextRight = q->right;
+                else
+                    q->left->nextRight = getNextRight(q);
+            }
+ 
+            if (q->right)
+                q->right->nextRight = getNextRight(q);
+ 
+            // Set nextRight for other nodes in pre order fashion
+            q = q->nextRight;
+        }
+ 
+        // start from the first node of next level
+        if (p->left)
+           p = p->left;
+        else if (p->right)
+           p = p->right;
+        else
+           p = getNextRight(p);
+    }
+}
+ 
+/* UTILITY FUNCTIONS */
+/* Helper function that allocates a new node with the
+   given data and NULL left and right pointers. */
+struct node* newnode(int data)
+{
+    struct node* node = (struct node*)
+                        malloc(sizeof(struct node));
+    node->data = data;
+    node->left = NULL;
+    node->right = NULL;
+    node->nextRight = NULL;
+ 
+    return(node);
+}
+ 
+/* Driver program to test above functions*/
+int main()
+{
+ 
+    /* Constructed binary tree is
+              10
+            /   \
+          8      2
+        /         \
+      3            90
+    */
+    struct node *root = newnode(10);
+    root->left        = newnode(8);
+    root->right       = newnode(2);
+    root->left->left  = newnode(3);
+    root->right->right       = newnode(90);
+ 
+    // Populates nextRight pointer in all nodes
+    connect(root);
+ 
+    // Let us check the values of nextRight pointers
+    printf("Following are populated nextRight pointers in the tree "
+           "(-1 is printed if there is no nextRight) \n");
+    printf("nextRight of %d is %d \n", root->data,
+           root->nextRight? root->nextRight->data: -1);
+    printf("nextRight of %d is %d \n", root->left->data,
+           root->left->nextRight? root->left->nextRight->data: -1);
+    printf("nextRight of %d is %d \n", root->right->data,
+           root->right->nextRight? root->right->nextRight->data: -1);
+    printf("nextRight of %d is %d \n", root->left->left->data,
+           root->left->left->nextRight? root->left->left->nextRight->data: -1);
+    printf("nextRight of %d is %d \n", root->right->right->data,
+           root->right->right->nextRight? root->right->right->nextRight->data: -1);
+ 
+    getchar();
+    return 0;
+}
+void connectRecur(struct node* p);
+struct node *getNextRight(struct node *p);
+ 
+// Sets the nextRight of root and calls connectRecur() for other nodes
+void connect (struct node *p)
+{
+    // Set the nextRight for root
+    p->nextRight = NULL;
+ 
+    // Set the next right for rest of the nodes (other than root)
+    connectRecur(p);
+}
+ 
+/* Set next right of all descendents of p. This function makes sure that
+nextRight of nodes ar level i is set before level i+1 nodes. */
+void connectRecur(struct node* p)
+{
+    // Base case
+    if (!p)
+       return;
+ 
+    /* Before setting nextRight of left and right children, set nextRight
+    of children of other nodes at same level (because we can access 
+    children of other nodes using p's nextRight only) */
+    if (p->nextRight != NULL)
+       connectRecur(p->nextRight);
+ 
+    /* Set the nextRight pointer for p's left child */
+    if (p->left)
+    {
+       if (p->right)
+       {
+           p->left->nextRight = p->right;
+           p->right->nextRight = getNextRight(p);
+       }
+       else
+           p->left->nextRight = getNextRight(p);
+ 
+       /* Recursively call for next level nodes.  Note that we call only
+       for left child. The call for left child will call for right child */
+       connectRecur(p->left);
+    }
+ 
+    /* If left child is NULL then first node of next level will either be
+      p->right or getNextRight(p) */
+    else if (p->right)
+    {
+        p->right->nextRight = getNextRight(p);
+        connectRecur(p->right);
+    }
+    else
+       connectRecur(getNextRight(p));
+}
+ 
+/* This function returns the leftmost child of nodes at the same level as p.
+   This function is used to getNExt right of p's right child
+   If right child of p is NULL then this can also be used for the left child */
+struct node *getNextRight(struct node *p)
+{
+    struct node *temp = p->nextRight;
+ 
+    /* Traverse nodes at p's level and find and return
+       the first node's first child */
+    while(temp != NULL)
+    {
+        if(temp->left != NULL)
+            return temp->left;
+        if(temp->right != NULL)
+            return temp->right;
+        temp = temp->nextRight;
+    }
+ 
+    // If all the nodes at p's level are leaf nodes then return NULL
+    return NULL;
+}
+
+
+/*constant space*/
+
+
+
+
+/*recursive and non-recursive*/
+/*list already in ascending order*/
+/*uses wrapper class to pass parameters*/
+public static class wp{
+	LinkedNode head;
+}
+
+public static Node list2BST(wp head,int len){
+if(!(len>0)) return null;
+Node left=new Node();
+left=(list2BST(head,len/2));
+Node root=new Node();
+root.left=left;
+root.value=head.head.data;
+head.head=head.head.next;
+root.right=(list2BST(head,len-(len/2)-1));
+return root;
+}
+
+public class loophaed{
+public static class LinkedNode{
+
+public int data;
+public LinkedNode next;
+
+}
+
+
+/*determine if the list contains a loop*/
+    public static LinkedNode lpHead(LinkedNode head){
+
+    	  LinkedNode slow=head;
+    	  LinkedNode fast=head;
+    	  Boolean isLp=false;
+    	  while(fast!=null&&fast.next!=null){
+    	    	  slow=slow.next;
+    	  fast=fast.next.next;
+    	  if(slow==fast)
+  	    { isLp=true;break; }
+
+    	  }
+
+    	  if(!isLp)return head;//or return null
+           slow=head;
+    	  while(slow!=fast){
+          slow=slow.next;
+    	  fast=fast.next;
+    	  }
+            return fast;
+    	  }
+public static void main (String[] args){
+
+       LinkedNode head = new LinkedNode();
+                LinkedNode a1= new LinkedNode();
+                LinkedNode a2= new LinkedNode();
+                LinkedNode a3= new LinkedNode();
+                LinkedNode a4= new LinkedNode();
+                LinkedNode a5= new LinkedNode();
+                LinkedNode a6= new LinkedNode();
+                head.data = 1;
+                head.next = a1;
+                a1.data=2;
+                a1.next=a2;
+                a2.data=3;
+                a2.next=a3;
+                a3.data=6;
+                a3.next=a4;
+                a4.data=3;
+                a4.next=a5;
+                a5.data=2;
+                a5.next=a6;
+                a6.data=1;
+                a6.next=a3;
+
+
+ lpHead(head);
+
+}
+
+
+}
+describe map-reduce
+
+
+recursion and non-recursion method 
+
+which is better and why?
+
+call stack consumes memery
+not efficient,
+lost information
+
+more efficient,
+hard to write to understand
+
+
+public class maxDiff{
+	public static int lindex;
+	public static int rindex;
+	public static void returnMaxDiff(int [] a,int n){
+
+	        int [] minLeft = new int [n-1];
+	        minLeft[0]=0;
+	        for ( int i=1;i<n-1;i++){
+	                minLeft[i]= a[minLeft[i-1]]>a[i]?i:minLeft[i-1];
+	        }
+	        int tmp= Integer.MIN_VALUE;
+	        for (int i=1;i<n;i++){
+	                 if(a[i]-a[minLeft[i-1]]>tmp){
+	                        tmp=a[i]-a[minLeft[i-1]];
+	                        lindex=minLeft[i-1];
+	                        rindex=i;
+	        	}
+	        }
+	return;
+	}
+
+
+	public static int returnMaxIndexDiff(int [] a,int n){
+
+		int [] minLeft = new int [n];
+		int [] maxRight = new int [n];
+		minLeft[0]=a[0];
+		 for ( int i=1;i<n;i++){
+                        minLeft[i]= minLeft[i-1]>a[i]?a[i]:minLeft[i-1];
+                }
+		maxRight[n-1]= a [n-1];
+		for (int i=n-2;i>-1;i--){
+			maxRight[i]=maxRight[i+1]<a[i]?a[i]:maxRight[i+1];
+		}
+		int i=0;
+		int j=0;
+		int maxIndexDiff=-1;
+		while(i<n&&j<n){
+			if(maxRight[j]>minLeft[i]){
+				maxIndexDiff= maxIndexDiff<(j-i)?j-i:maxIndexDiff;
+				j++;
+			}else{
+				i++;}
+		}
+			
+		return maxIndexDiff;
+	}
+
+
+
+
+	}
+
+
+
+}
+
+
+#include <vector>
+#include <iostream>
+using namespace std;
+void print( vector<int> v){
+	vector<int>::iterator it ;
+	for( it = v.begin(); it != v.end(); ++it )
+		cout << *it << " " ;
+}
+
+struct Node{
+	Node* 	left;
+	Node* 	right;
+	int 	value;
+};
+
+int maxPath( Node* n, vector<int> &path ){
+	if( n != NULL ){
+		//cout<<n->value<<endl;
+		vector<int> leftPath;
+		int leftMax = maxPath( n->left, leftPath );
+
+vector<int> rightPath;
+		int rightMax = maxPath( n->right, rightPath );
+
+path = leftMax > rightMax ? leftPath : rightPath;
+		int ret = leftMax > rightMax ? leftMax : rightMax;
+
+path.push_back( n->value );
+		
+		return ret + n->value;
+	}
+	else
+		return 0;
+	
+}
+
+int main(){
+	Node* root = new Node;
+	root->value = 1;
+	root->left = new Node;
+	root->left->value = 2;
+	root->right = new Node;
+	root->right->value = 3;
+	root->right->left = new Node;
+	root->right->left->value = 4;
+
+vector<int> path;
+	cout<<maxPath(root,path)<<endl;
+	print(path);
+
+}
+
+/*how to reconstruct the solution?*/
+public static int  maxSumPath( Node root ){
+    if(root==null) return 0;
+    int maxCurrent;
+    int leftMax=root.value+maxSumPath(root.left);
+    int rightMax=root.value+maxSumPath(root.right);
+    maxCurrent = Math.max(leftMax,rightMax);
+    root.direction = leftMax>rightMax?0:1;
+    return maxCurrent;
+}
+
+
+public static int medianOf2(int [] array1,int [] array2,int len){
+      
+         int mid1=n/2;
+         int mid2=n/2;
+        while(array1[mid1]!=array2[mid2]){
+            if( array1[mid1]>array2[mid2]){      
+                   mid1=mid1/2;
+                   mid2=(mid2+n)/2;
+		}
+            else{
+		mid1=(mid1+n)/2;
+                mid2=mid2/2;
+		}
+            } 
+
+
+
+
+
+
+
+
+
+
+}
+void Merg(int [] a1, int n1, int [] a2, int n2)
+{
+	assert(n1>0);
+	assert(n2>0);
+	assert(a1!=null);
+	assert(a2!=null);
+	int nIter1 = n1-1;
+	int nIter2 = n2-1;
+	int nIter = n1+n2-1;
+	while (nIter1 >= 0 && nIter2 >= 0)
+	{
+		if (a1[nIter1] < a2[nIter2])
+		{
+			a2[nIter--] = a2[nIter2--];
+		}
+		else if (a1[nIter1] > a2[nIter2])
+			{
+				a2[nIter--] = a1[nIter1--];
+			}
+		else
+			{
+				a2[nIter--] = a1[nIter1--];
+				a2[nIter--] = a1[nIter2--];
+			}
+	}
+
+	if (nIter1 < 0)
+	{
+		while (nIter2 >= 0)
+		{
+			a2[nIter--] = a2[nIter2--];
+		}
+	}
+
+	if (nIter2 < 0)
+	{
+		while (nIter1 >= 0)
+		{
+			a2[nIter--] = a2[nIter1--];
+		}
+	}
+}
+public class mergeArray{
+
+
+
+public static void merge(){
+
+
+
+
+
+
+}
+public static void main(String[] args){
+
+
+
+}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+public static class minMax{
+    int min;
+    int max;
+}
+public static minMax getMinMax(int [] a, int n){
+
+    if (a==null || n==0)
+	return null;
+    minMax result= new minMax();
+    int i=0;
+    if(n % 2==0){
+	if(a[0]>a[1]){
+	    result.min = a[1];
+	    result.max= a[0];
+	}
+	else{
+	       result.min = a[0];
+	    result.max= a[1];
+	}
+	i=2;
+    }
+    else{
+	  result.min = a[0];
+    result.max = a[0];
+    i = 1; 
+    }
+    while(i<n-1){
+	if(a[i]>a[i+1]){
+	    if(a[i]>result.max)
+		result.max = a[i];
+	    if(a[i+1]<result.min)
+		result.min =a[i+1];
+	}
+	else{
+	    if(a[i+1]>result.max)
+		result.max = a[i+1];
+	    if(a[i]<result.min)
+		result.min =a[i];
+	}
+	i+=2;
+    }
+    return result;
+}
+
+       If n is odd:    3*(n-1)/2  
+       If n is even:   1 Initial comparison for initializing min and max, 
+                           and 3(n-2)/2 comparisons for rest of the elements  
+                      =  1 + 3*(n-2)/2 = 3n/2 -2
+public class minStack extends Stack<Integer>{
+Stack<Integer> minSt;
+public minStack(){
+     minSt=new Stack<Integer>();
+}
+
+public void push(int value){
+if(value<=min()){
+minSt.push(value);
+}
+super.push(value);
+}
+
+public int pop(){
+int value=super.pop();
+if(value==min())
+minSt.pop();
+return value;
+}
+public int min(){
+if(minSt.isEmpty())
+       return Integer.MAX_VALUE;
+ return minSt.peek();
+}
+
+}
+/*recursive inplace and not inplace*/
+public static void mirrorTree( Node root){
+    if(root==null) return;
+    Node tmp = root.left;
+    root.left=root.right;
+    root.right=tmp;
+    mirrorTree(root.left);
+    mirrorTree(root.right);
+return;
+}
+
+
+public static Node mirrorTree (Node root){
+
+    if(root==null)return null;
+
+    else{
+
+	Node tmp = new Node();
+	tmp.value = root.value;
+	tmp.left = mirrorTree(root.right);
+	tmp.right=mirrorTree(root.left);
+
+	return tmp;
+    }
+}
+void MirrorWithoutRecursion(Node tree)
+{
+ if (!tree)
+		return;
+Stack s;
+s.push(tree);
+while(!s.empty())
+{
+Node  current = s.pop();
+// Swap the children
+//
+Node  temp = current->right;
+current->right = current->left;
+current->left = temp;
+
+// Push the children on the stack
+//
+if (current->right)
+s.push(current->right);
+
+if (current->left)
+s.push(current->left);
+}
+}
+/*recursive inplace and not inplace*/
+public static void mirrorTree( Node root){
+    if(root==null) return;
+    Node tmp = root.left;
+    root.left=root.right;
+    root.right=tmp;
+    mirrorTree(root.left);
+    mirrorTree(root.right);
+return;
+}
+
+
+public static Node mirrorTree (Node root){
+
+    if(root==null)return null;
+
+    else{
+
+	Node tmp = new Node();
+	tmp.value = root.value;
+	tmp.left = mirrorTree(root.right);
+	tmp.right=mirrorTree(root.left);
+
+	return tmp;
+    }
+}
+public class nextNode{
+
+
+public static Node nxNode(Node node){
+if(node == null) return null; 
+if(node.right==null){
+	if(n.parent==null)return null;
+        else{
+		while(node.parent!=null&&node!=node.parent.left){
+			node=node.parent;
+                     }
+                  return node.parent;
+           }
+       }
+else{
+      while(node.left!=null){
+    		node=node.left;
+	}
+       return node;
+}
+
+}
+
+}
+
+
+
+
+
+
+
+
+
+}
+public static ArrayList<String> pmString(String target){
+
+if(target==null) return null;
+
+ArrayList<String> result= new ArrayList<String>();
+if(target.length()==0){
+result.add("");
+return result;
+}
+
+char fst=target.charAt(0);
+String rest=target.substring(1);
+ArrayList<String> restP= pmString(rest);
+for(String p:restP){
+ for(int i=0;i<=p.length();i++){
+          String start=p.substring(0,i);
+          String end=p.substring(i);
+          result.add(start+fst+end);
+        }
+}
+return result;
+}
+//Implement the function
+//int pow (int a, int b)
+//that takes two integers 'a' and 'b' and returns a^b (i.e 'a' raised to the power 'b')
+
+public static int powerCal( int a ,int b){
+
+	if (a ==0 ) return -1;
+	if(b ==0) return 1;
+	if(b==1) return a ;
+	if(b%2==1) return powerCal(a , b-1)*a;
+	return powerCal (a*a,b/2);
+}
+public static void preOder(Node root){
+	
+ 	if(root==null) return;
+	Node tmp = root;
+    	Stack<Node> nodes = new Stack<Node> ();
+	nodes.push(tmp);
+	while(!nodes.isEmpty()) { 
+		System.out.print(nodes.peek().value+" ");
+		tmp = nodes.pop();
+		if(tmp.right!=null) nodes.push(tmp.right);
+		if(tmp.left!=null) nodes.push(tmp.left);
+	  }
+     return;
+}
+ 	
+//return the number of prime numbers 
+public static int inputPrime ( int [] a,int n){
+    if (a==null) return -1;
+    if(a==1) return 1;
+    if(a==2) return 2;
+
+    a[0]=1;
+    a[1]=2;
+    int nRet =2 ;
+    for(int i=3;i<=n;i++){
+	if(isPrime(a,i))
+	    a[nRet++]=i;
+    }
+    return nRet;
+}
+
+public static Boolean isPrime(int [] a, int num){
+    for ( int i=1; a[i]*a[i]<num; i++){
+	if(num%a[i]==0)
+	    return false;
+	return true;
+    }
+public static void printLevel( Node root){
+    if(root==null) return ;
+    Queue<Node> lst = new LinkedList<Node>();
+    lst.add(root);
+    int nCur =1 ;
+    int nNext =0;
+    while(!lst.isEmpty()){
+	Node tmp = lst.remove();
+	nCur--;
+	if(tmp.left!=null){
+	    lst.add(tmp.left);
+	    nNext++;
+	}
+	if(tmp.right!=null){
+	    lst.add(tmp.right);
+	    nNext++;
+	}
+	System.out.print(tmp.value);
+	if(nCur==0){
+	    System.out.println();
+	    nCur=nNext;
+	    nNext=0;
+	}
+
+    }
+       
+}
+public class ptList{
+	   public static class LinkedNode{
+
+	    	  public int data;
+	    	  public LinkedNode next;
+
+	    	  public LinkedNode()
+	    	  {}
+	    	  
+	    	  }
+
+public static LinkedNode patitionList(LinkedNode head,int x){
+
+if(head==null||head.next==null)
+  return head;
+LinkedNode cur=head;
+LinkedNode pur=head.next;
+while(pur!=null)//condition statement!
+{
+   if(pur.data<x)
+  {
+   cur.next=pur.next;
+   pur.next=head;
+   head=pur;
+   pur=cur.next;
+   continue;
+ }
+
+cur=pur;
+pur=pur.next;
+
+}
+return head;
+
+}
+
+/*sort a linkedlist that only has three element 0 , 1 , 2*/
+
+	  public static LinkedNode sortList(LinkedNode head){
+
+    		  if(head==null||head.next==null)
+    		    return head;
+    		  LinkedNode cur=head;
+    		  LinkedNode pur=head.next;
+    		  int len=1;
+    		  while(cur.next!=null)
+    		  { cur=cur.next;len++;}
+    		  LinkedNode endcur=cur;
+    		  cur=head;
+    		  while(pur!=null&&len>0)//condition statement!
+    		  {
+    		      len--;
+    		     if(pur.data==0)
+    		    {
+    		     cur.next=pur.next;
+    		     pur.next=head;
+    		     head=pur;
+    		     pur=cur.next;
+    		     continue;
+    		   }
+    		       if(pur.data==2)
+    		    {
+    		     if(pur.next==null)
+    		     {
+    		    	 return head;
+    		     }
+    		     cur.next=pur.next;
+    		     endcur.next=pur;
+    		     pur.next=null;
+    		     endcur=pur;
+    		     pur=cur.next;
+    		     continue;
+    		   }
+    		  cur=pur;
+    		  pur=pur.next;
+
+    		  }
+    		  return head;
+    		  }
+
+public static void main (String[] args){
+
+/*test cases*/
+
+
+
+}
+
+
+}
+/*three way quicksort that takes into account duplicate variables*/
+public static void quickSort(int [] a, int low,int high){
+    if(a==null||low>=high) return;
+    int i=low;
+    int lt=low;
+    int gt=high;
+    while(i<=gt){
+	if(a[i]<a[lt]){
+	    exch(a,lt,i);
+ 	    lt++;
+ 	    i++;
+	}
+	else if(a[i]>a[lt]){
+	    exch(a,i,gt);
+	     gt--;
+	}
+	else {i++;}
+	
+    }
+    quickSort(a,low,lt-1);
+    quickSort(a,gt+1,high);
+}
+
+/*finding the kth largest number in the array*/
+public static int kth(int [] a, int k){
+    if(a==null) return -1;
+    if(k>a.length-1) return -1;
+    while
+#include <stdio.h>
+ 
+int foo() // given method that returns 1 to 5 with equal probability
+{
+    // some code here
+}
+ 
+int my_rand() // returns 1 to 7 with equal probability
+{
+    int i;
+    i = 5*foo() + foo() - 5;
+    if (i < 22)
+        return i%7 + 1;
+    return my_rand();
+}
+ 
+int main()
+{
+    printf ("%d ", my_rand());
+    return 0;
+}
+
+This is interview practice source code
+int findRepeation (int a [ ], int n) // where size of array n + 1
+
+{
+
+int i = 0;
+
+
+
+for(int i = 0; i < size; i++)
+
+{
+
+int j = ( ( a [ i ] < 0 ) ? -1 : 1 ) * a [ i ]; // j = abs( a[ i ] )
+
+
+
+if(a [ j ] > 0)
+
+a [ j ] *= -1;
+
+else
+
+break; // break from the for loop
+
+}
+
+
+
+return i; // index of the first repeation
+
+
+
+/* I prefer returning the index instead of the element itself.
+
+
+
+return a [ i ]; // first repeated element
+
+*/
+
+}
+
+
+public class replace{
+
+
+    public static String rep(String target){
+          if(target==null)
+        	  return null;
+    	  char[] charList= target.toCharArray();
+    	  int spacecount=0;
+    	  for (int j=0;j<charList.length;j++)
+    		  if(charList[j]==' ')
+    			  spacecount++;
+    	  
+    	  char[] newList= new char [charList.length+spacecount*2];
+    	  int cur=0;
+    	  for(int i=0;i<charList.length;i++){
+    	  if(charList[i]==' '){
+    	  newList[cur++]='%';
+    	  newList[cur++]='2';
+    	  newList[cur++]='0';
+    	  }
+    	  else
+    		  newList[cur++]=charList[i];
+    	  }
+    	 // newList[cur]='\0';
+    	  return new String(newList);
+    	  }
+
+
+
+public static void main (String[] args){
+
+
+String s="hello world,this is a testcase!";
+System.out.println(rep(s));
+
+
+}
+// test.cpp : ..............
+//
+
+#include "stdio.h"
+ 
+void reverseString(char* str){
+
+if(str==0)
+return;
+
+char* end = str;
+
+char temp;
+
+while(*end){
+	++end;
+}
+
+--end;
+
+while(str<end){
+    temp=*str;
+    *str++=*end;
+    *end--=temp;
+}
+
+}
+
+int void main()
+{
+
+	char* s="abcd";
+	reverseString(s);
+	return 0;
+}
+ 
+
+
+public static int finddupor(int [] a, int n){
+	int sum=(1+n)*n/2;
+	int sqsum=n*(n+1)*(2*n+1)/6;
+	int sumA=0;
+	int sqsumA=0;
+	for (int i=0;i<n;i++){
+		sumA+=a[i];
+		sqsumA+=a[i]*a[i];
+		}
+	if((sum-sumA)==0)return 0;
+	return (((sqsum-sqsumA)/(sum-sumA))-(sum-sumA))/2;
+}
+public class rmDups{
+
+   public static class LinkedNode{
+
+	    	  public int data;
+	    	  public LinkedNode next;
+
+	    	  public LinkedNode()
+	    	  {}
+	    	  
+	    	  }
+public static void rmDuplicate(LinkedNode head){
+if(head==null)return;
+HashSet<Integer> ele = new HashSet<Integer>();
+LinkedNode cur=head;
+ele.add(cur.data);
+while(cur.next!=null){
+
+if(ele.contains(cur.next.data)){
+cur.next=cur.next.next;
+continue;
+}
+else{
+   ele.add(cur.next.data);
+   cur=cur.next;
+}
+}
+
+}
+
+public static void main (String [] args){
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+git add *
+git commit -m "hello"
+git push origin master
+public static void g  enParen(ArrayList<String> result,int leftp,int rightp,char[] str, int n){
+    if(leftp==0&&rightp==0)
+	result.add(String.copyValueOf(str);
+     else{
+	 if(leftp>0){
+	     str[n]="(";
+	     genParen(result,leftp-1,rightp,str,n+1);
+	 }
+	 if(rightp>leftp){
+	     str[n]=")";
+	     genParen(result,leftp,rightp-1,str,n+1);
+	 }
+     }
+		   }
+public static void sort(int a [],int n) throws java.lang.Exception{
+    if (a==null) return;
+    if (n==0||n==1)return;
+    int index1=0;
+    int index2=n-1;
+    for(int i=0;i<n;){
+	if(a[i]==0){
+	    a[i]=a[index1];
+	    a[index1]=0;
+	    i++;
+	    index1++;
+	}
+	else if(a[i]==2){
+	    a[i]=a[index2];
+	    a[index2]=2;
+	    index2--;
+	}
+	else if(a[i]==1){
+	    i++;
+	}
+	else 
+	    throw new Exception ("values should be 0,1,or 2!\n");
+    }
+}
+//sorts lists elements ranging from 1 to n all together.
+
+
+'m thinking about constructing a array A of linkedlist to solve the problem.
+
+ 
+
+ the index of the array  A is ranging from 1 to n, A[i] is a linkedlist that contains the index of the L that contains value i.
+
+ 
+
+for example:
+
+ 
+
+ 
+
+A[1] --1->1>3   (list L1 contains two 1s, List L3 contains one 1)
+
+A[2]--
+
+A[3]--
+
+
+A[4]--2->4      (list L2 contains one 4 ,List L4 contains a 4)
+
+A[5]--
+
+ 
+
+ 
+
+so we go over the lists once to construct the array of linkedlist , this takes O(n) time because the insertion into the indexed linkedlist takes constant time. 
+
+after scanning all the lists L , we scan the array of linkedlst from A[1] to A[n] and create the new lists L' at the same time.
+
+because there are in total n values for the index and n total elements in  all the linked list, the total running time, similar to BFS, should be O(n+n)=O(n).
+public static float findSqure(float n){
+    if(n<0)return -1;
+    if(n==0)return 0;
+    float fMin=0.0;
+    float fMax=n;
+    float fTmp = fMin/2 + fMax/2;
+    int count =10000;
+    while(Math.Abs(fTmp*fTmp-n)>0.00001){
+	if(count--=0) break;
+	if(fTmp*fTmp>f){
+	    fMax=fTmp;
+	    fTmp= fMin/2 + fMax/2;
+	}
+	else
+	    {
+	    fMin=fTmp;
+	    fTmp= fMin/2 + fMax/2;
+	    }
+    }
+    return fTmp;
+}
+
+/*fragment for integers*/
+hi = number
+lo = 0
+mid = ( hi + lo ) / 2
+mid2 = mid*mid
+while( lo < hi-1 and mid2 != number ) {
+    if( mid2 < number ) {
+        lo = mid
+    else
+        hi = mid
+    mid = ( hi + lo ) / 2
+    mid2 = mid*mid
+public class stringCompre{
+
+public static int numofBits(int a){
+int bits=0;
+while(a>1){
+a= a/10;
+bits++;
+}
+return bits;
+}
+
+public static String strCompresion(String target){
+
+if(target==null||target.length()<3)
+     return target;
+int totalBits=0;
+char[] targetList= target.toCharArray();
+int count=1;
+char last=targetList[0];
+for(int i =1;i<targetList.length;i++)
+{  if(targetList[i]==last)
+         count++;
+   else{
+    totalBits+=1+String.valueOf(count).length();
+    last=targetList[i];
+    count=1;
+}
+}
+totalBits+=1+String.valueOf(count).length();
+
+if(totalBits>target.length())
+     return target;
+/*determine if worth the effort*/
+     
+
+StringBuffer newStr= new StringBuffer();
+
+count=1;
+last=targetList[0];
+for(int i =1;i<targetList.length;i++)
+{  if(targetList[i]==last)
+         count++;
+   else{
+    newStr.append(last);
+    newStr.append(count);
+    last=targetList[i];
+    count=1;
+}
+}
+ newStr.append(last);
+    newStr.append(count);
+
+return  newStr.toString();
+}
+
+public static void main (String[] args){
+
+
+
+}
+
+}
+public class BoyerMoore {
+    private final int BASE;
+    private int[] occurrence;
+    private String pattern;
+
+    public BoyerMoore(String pattern) {
+        this.BASE = 256;
+        this.pattern = pattern;
+
+        occurrence = new int[BASE];
+        for (int c = 0; c < BASE; c++)
+            occurrence[c] = -1;
+        for (int j = 0; j < pattern.length(); j++)
+            occurrence[pattern.charAt(j)] = j;
+    }
+
+    public int search(String text) {
+    	int n = text.length();
+    	int m = pattern.length();
+        int skip;
+        for (int i = 0; i <= n - m; i += skip) {
+            skip = 0;
+            for (int j = m-1; j >= 0; j--) {
+                if (pattern.charAt(j) != text.charAt(i+j)) {
+                    skip = Math.max(1, j - occurrence[text.charAt(i+j)]);
+                    break;
+                }
+            }
+            if (skip == 0) return i;
+        }
+        return n;
+    }
+}
+
+
+public class Test {
+
+	public static void main(String[] args) {
+		String text = "Lorem ipsum dolor sit amet";
+		String pattern = "ipsum";
+		BoyerMoore bm = new BoyerMoore(pattern);
+		
+		int first_occur_position = bm.search(text);
+		System.out.println("The text '" + pattern + "' is first found after the " 
+                                    + first_occur_position + " position.");
+	}
+
+}
+public static ArrayList<ArrayList<Integer>> subSet(ArrayList<Integer> set){
+    ArrayList<ArrayList<Integer>> subSet = new ArrayList<ArrayList<Integer>>();
+    int size=1<<set.size();
+    for (int i= 0;i<size;i++){
+	ArrayList<Integer> subsets= new ArrayList<Integer>();
+	int index=0;
+	for(int j=i;j>0;j>>=1){
+	    if((j&1)==1)
+	    subsets.add(set.get(index));
+	index++;
+	}
+    }
+    return subSet;
+}
+public static void printSets(ArrayList<Integer> sets){
+	
+	for (int s: sets){
+		System.out.print(s+" ");
+	}
+	System.out.print('\n');
+	return;
+}
+/*the depth of the tree is 5*/
+public static int pathsum [] = new int [5];
+
+public static void printPath(Node root, int sum, int [] pathsum, int level){
+	if(root==null) return;
+	pathsum[level]=root.value;
+	int s=0;
+	for(int i=level;i>0;i--){
+		s+=pathsum[i];
+			if(s==sum)
+				print(pathsum,i,level);
+		}
+	printPath(root.left,sum,pathsum,level+1);
+	printPath(root.right,sum,pathsum,level+1);
+
+
+
+}
+
+public static void print(int pathsum [],int start, int end){
+
+for (int i = start;i<=end;i++){
+	System.out.print(pathsum[i]+" ");
+}
+ System.out.println();
+}
+Êþº¾   2 .
+  	   
+   
+  
+  
+  
+     ! <init> ()V Code LineNumberTable main ([Ljava/lang/String;)V StackMapTable " 
+SourceFile xor.java   # $ % java/lang/StringBuilder result: & ' & ( ) * + , - xor java/lang/Object [I java/lang/System out Ljava/io/PrintStream; append -(Ljava/lang/String;)Ljava/lang/StringBuilder; (I)Ljava/lang/StringBuilder; toString ()Ljava/lang/String; java/io/PrintStream println (Ljava/lang/String;)V ! 
+                   *· ±            	       ˜     U¼
+YOYOYOY	OYOYOYOL=>+¾¢ +.‚=„§ÿñ² » Y· ¶ ¶ ¶ ¶ 	±            %  '  /  5  ; 	 T 
+     þ ) ú       
+public class xor{
+public static void main(String []  args) {
+    int[] x = new int[] { 5,7,4,9,5,7,4 };
+    int result = 0;
+    for (int i=0;i<x.length;i++) {
+        result ^= x[i];
+    }
+    System.out.println("result:"+result);
+}
+}
+public class zeroMatrix{
+
+
+
+public static void convertMatrix(int[][] matrix)
+{
+/*could use bitvector to boot efficiency*/
+HashSet zRow= new HashSet();
+HashSet zCol= new HashSet();
+
+for(int i=0;i<matrix.length;i++)
+  for(int j=0;j<matrix[0].length;j++)
+     if(matrix[i][j]==0)
+        {
+         zRow.add(i);
+         zCol.add(j);
+
+}
+for(int x=0;x<matrix.length;x++)
+  for(int y=0;y<matrix[0].length;y++)
+    if(zRow.contains(x)||zCol.contains(y))
+            matrix[x][y]=0;
+}
+
+public static void main(String[] args)
+{
+  int [][] matrix = new int[3][4];
+                for(int i=0;i<3;i++)
+                	for(int j=0;j<4;j++)
+                		matrix[i][j]=1;
+                matrix[2][1]=0;
+               // matrix[0][3]=0;
+             //   matrix[1][1]=0;
+                convertMatrix(matrix);
+                for(int i=0;i<3;i++){
+                	for(int j=0;j<4;j++)
+                		System.out.print(matrix[i][j]);
+                System.out.print("\n");
+
+
+}
+
+}

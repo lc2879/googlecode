@@ -30,3 +30,31 @@ void print_spiral(int mat[][N_MAX], int m, int n, int k) {
 void print_spiral_helper(int mat[][N_MAX], int m, int n) {
   print_spiral(mat, m, n, 0);
 }
+
+    class Solution {  
+    public:  
+        vector<vector<int> > generateMatrix(int n) {  
+            // Start typing your C/C++ solution below  
+            // DO NOT write int main() function  
+            vector<vector<int> > result(n, vector<int>(n));  
+            if (n == 0) return result;  
+              
+            int num = 0;  
+            int layer = n/2;  
+            for (int i = 0; i < layer; ++i)  
+            {  
+                int j;  
+                for (j = i; j < n-1-i; ++j)  
+                    result[i][j] = ++num;  
+                for (j = i; j < n-1-i; ++j)  
+                    result[j][n-1-i] = ++num;  
+                for (j = n-1-i; j > i; --j)  
+                    result[n-1-i][j] = ++num;  
+                for (j = n-1-i; j > i; --j)  
+                    result[j][i] = ++num;  
+            }  
+            if (n%2 == 1)  
+                result[n/2][n/2] = ++num;  
+            return result;  
+        }  
+    };  

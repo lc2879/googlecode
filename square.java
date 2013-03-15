@@ -19,7 +19,21 @@ public static float findSqure(float n){
     }
     return fTmp;
 }
-
+//sqrt
+   public static double sqrt(double x){
+        if(x==1 || x==0) return x;
+        if(x<0)return -1;
+        double stopCase = 0.00001;
+        double left = 0, right = x<1? 1:x;
+        while(right-left>stopCase){
+            double mid = left + (right - left)/2;
+            double midSqr = mid * mid;
+            if(midSqr ==x)return mid;
+            else if(midSqr > x) right = mid;
+            else left = mid;
+        }
+        return (left+right)/2.0;
+    }
 /*fragment for integers*/
 hi = number
 lo = 0
